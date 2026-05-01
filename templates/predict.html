@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>🔮 Predict Final Grade</h2>
+<hr>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5>Enter Student Information</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label>Select Student</label>
+                        <select name="user_id" class="form-control" required>
+                            <option value="">-- Select Student --</option>
+                            {% for user in users %}
+                            <option value="{{ user[0] }}">{{ user[1] }} ({{ user[2] }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Study Time (1=low, 4=high)</label>
+                        <input type="number" name="studytime" class="form-control" min="1" max="4" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Past Failures (0-3)</label>
+                        <input type="number" name="failures" class="form-control" min="0" max="3" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Absences</label>
+                        <input type="number" name="absences" class="form-control" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>First Period Grade (G1 - 0 to 20)</label>
+                        <input type="number" name="G1" class="form-control" min="0" max="20" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Second Period Grade (G2 - 0 to 20)</label>
+                        <input type="number" name="G2" class="form-control" min="0" max="20" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Predict Grade</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        {% if prediction %}
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h4>Predicted Final Grade (G3)</h4>
+                <h1 class="display-1">{{ prediction }}</h1>
+                <p class="lead">out of 20</p>
+                <hr>
+                <p>✅ Prediction saved to database</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="card bg-light">
+            <div class="card-body text-center">
+                <h5>📝 How it works</h5>
+                <p>Our ML model (Linear Regression) predicts the final grade based on:</p>
+                <ul class="text-start">
+                    <li>Study time</li>
+                    <li>Past failures</li>
+                    <li>Attendance (absences)</li>
+                    <li>Previous period grades (G1, G2)</li>
+                </ul>
+                <small>Model trained on 649 real student records</small>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
