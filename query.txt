@@ -1,0 +1,23 @@
+CREATE DATABASE student_performance_db;
+USE student_performance_db;
+
+-- Table 1: users
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE
+);
+
+-- Table 2: predictions (FK to users)
+CREATE TABLE predictions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    studytime INT,
+    failures INT,
+    absences INT,
+    G1 INT,
+    G2 INT,
+    predicted_G3 FLOAT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
